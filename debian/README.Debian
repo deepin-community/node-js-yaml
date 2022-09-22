@@ -1,0 +1,7 @@
+Browserify is required to build the browser version of js-yaml. This has not
+yet been packaged for Debian.
+
+In addition, the upstream README.md states that the browser version was only
+produced for their demo, is not guaranteed to work, and not supported.
+Therefore, only the node-module version of js-yaml is included in this
+Debian package.

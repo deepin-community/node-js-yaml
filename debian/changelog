@@ -1,0 +1,141 @@
+node-js-yaml (3.14.1+dfsg+~3.12.6-2) unstable; urgency=medium
+
+  * Increase test timeout (Closes: #980009)
+
+ -- Xavier Guimard <yadd@debian.org>  Tue, 12 Jan 2021 22:25:37 +0100
+
+node-js-yaml (3.14.1+dfsg+~3.12.6-1) unstable; urgency=medium
+
+  * Embed typescript definitions
+  * New upstream version 3.14.1+dfsg+~3.12.6
+
+ -- Xavier Guimard <yadd@debian.org>  Mon, 11 Jan 2021 15:42:54 +0100
+
+node-js-yaml (3.14.0+dfsg-3) unstable; urgency=medium
+
+  * Declare compliance with policy 4.5.1
+  * Modernize debian/watch
+  * Fix test for mocha 8 (Closes: #978301)
+
+ -- Xavier Guimard <yadd@debian.org>  Sun, 27 Dec 2020 08:54:30 +0100
+
+node-js-yaml (3.14.0+dfsg-2) unstable; urgency=medium
+
+  [ Debian Janitor ]
+  * Remove obsolete field Name from debian/upstream/metadata (already present in
+    machine-readable debian/copyright).
+
+  [ Xavier Guimard ]
+  * Bump debhelper compatibility level to 13
+  * Use dh-sequence-nodejs
+  * Add patch for node-argparse ≥ 2
+
+ -- Xavier Guimard <yadd@debian.org>  Sun, 01 Nov 2020 11:52:49 +0100
+
+node-js-yaml (3.14.0+dfsg-1) unstable; urgency=medium
+
+  [ Ross Gammon ]
+  * Remove myself from Uploaders
+
+  [ Xavier Guimard ]
+  * Declare compliance with policy 4.5.0
+  * Add "Rules-Requires-Root: no"
+  * Update lintian overrides
+  * New upstream version 3.14.0+dfsg
+  * Update pkg-js-tools use
+  * Add myself to uploaders list
+
+ -- Xavier Guimard <yadd@debian.org>  Thu, 28 May 2020 08:27:59 +0200
+
+node-js-yaml (3.13.1+dfsg-2) unstable; urgency=medium
+
+  * Team upload
+  * Switch install to pkg-js-tools
+
+ -- Xavier Guimard <yadd@debian.org>  Sat, 03 Aug 2019 15:43:15 +0200
+
+node-js-yaml (3.13.1+dfsg-1) unstable; urgency=medium
+
+  * Team upload
+
+  [ Bastien ROUCARIÈS ]
+  * Remove shebang patches
+  * Simplify rules
+  * Fix autopkgsuite
+
+  [ Xavier Guimard ]
+  * Bump debhelper compatibility level to 12
+  * Declare compliance with policy 4.4.0
+  * Remove unneeded dependency versions
+  * New upstream version 3.13.1+dfsg
+  * Switch test to pkg-js-tools and embed new test dependencies
+    (fast-check, lorem-ipsum and pure-rand)
+  * Update debian/copyright
+
+ -- Xavier Guimard <yadd@debian.org>  Mon, 08 Jul 2019 20:16:22 +0200
+
+node-js-yaml (3.11.0+dfsg-1) unstable; urgency=medium
+
+  * Team upload
+  * New upstream version, fix problems with octal/hex/bin
+    format.
+  * Bump format and policy (no changes).
+  * Move to salsa
+
+ -- Bastien Roucariès <rouca@debian.org>  Tue, 08 May 2018 22:53:56 +0200
+
+node-js-yaml (3.10.0+dfsg-1) unstable; urgency=medium
+
+  * Team upload
+  * New upstream version, fix problems with unicode.
+
+ -- Bastien Roucariès <rouca@debian.org>  Thu, 14 Sep 2017 21:07:56 +0200
+
+node-js-yaml (3.9.1+dfsg-1) unstable; urgency=medium
+
+  * Team upload
+  * Bump compat
+  * Create build profile nodoc, nocheck to reduce
+    build loop of node-tape.
+  * Run a copy of testsuite in autopkgtest
+
+ -- Bastien Roucariès <rouca@debian.org>  Thu, 17 Aug 2017 16:18:15 +0200
+
+node-js-yaml (3.9.1+dfsg-1~exp1) experimental; urgency=medium
+
+  * New upstream version
+  * Update lintian overrides
+  * Use Debian email address
+  * Switch to javascript for section hint
+  * Bump standards version, switched to https for copyright format URL
+
+ -- Ross Gammon <rossgammon@debian.org>  Tue, 15 Aug 2017 20:44:56 +0200
+
+node-js-yaml (3.7.0+dfsg-2) unstable; urgency=medium
+
+  * Team upload.
+  * Build reproducibility: do not use dh_fixperms -X
+
+ -- Jérémy Lal <kapouer@melix.org>  Wed, 01 Feb 2017 10:06:33 +0100
+
+node-js-yaml (3.7.0+dfsg-1) unstable; urgency=medium
+
+  * Team upload.
+
+  [ Ross Gammon ]
+  * Add missing copyright attribution
+
+  [ Jérémy Lal ]
+  * Remove restrictions on dependencies (Closes: #844014)
+  * Fix Files-Excluded field, missing wildcard
+  * Add repacksuffix in watch file
+  * New upstream version 3.7.0+dfsg
+  * Just generate manpage on build, depends help2man
+
+ -- Jérémy Lal <kapouer@melix.org>  Sat, 12 Nov 2016 10:26:55 +0100
+
+node-js-yaml (3.6.1+dfsg-1) unstable; urgency=low
+
+  * Initial release (Closes: #805411)
+
+ -- Ross Gammon <rosco2@ubuntu.com>  Sun, 04 Sep 2016 07:16:15 +0200

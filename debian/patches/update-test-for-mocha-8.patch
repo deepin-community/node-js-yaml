@@ -1,0 +1,1292 @@
+Description: update test for mocha 8
+Author: Xavier Guimard <yadd@debian.org>
+Forwarded: no
+Last-Update: 2020-12-27
+
+--- a/test/00-units.js
++++ b/test/00-units.js
+@@ -5,7 +5,7 @@
+ var fs   = require('fs');
+ 
+ 
+-suite('Units', function () {
++describe('Units', function () {
+   var directory = path.resolve(__dirname, 'units');
+ 
+   fs.readdirSync(directory).forEach(function (file) {
+--- a/test/10-loader.js
++++ b/test/10-loader.js
+@@ -9,7 +9,7 @@
+ var TEST_SCHEMA = require('./support/schema').TEST_SCHEMA;
+ 
+ 
+-suite('Loader', function () {
++describe('Loader', function () {
+   var samplesDir = path.resolve(__dirname, 'samples-common');
+ 
+   fs.readdirSync(samplesDir).forEach(function (jsFile) {
+@@ -17,7 +17,7 @@
+ 
+     var yamlFile = path.resolve(samplesDir, path.basename(jsFile, '.js') + '.yml');
+ 
+-    test(path.basename(jsFile, '.js'), function () {
++    it(path.basename(jsFile, '.js'), function () {
+       var expected = require(path.resolve(samplesDir, jsFile));
+       var actual   = [];
+ 
+--- a/test/11-load-errors.js
++++ b/test/11-load-errors.js
+@@ -9,13 +9,13 @@
+ var TEST_SCHEMA = require('./support/schema').TEST_SCHEMA;
+ 
+ 
+-suite('Load errors', function () {
++describe('Load errors', function () {
+   var samplesDir = path.resolve(__dirname, 'samples-load-errors');
+ 
+   fs.readdirSync(samplesDir).forEach(function (sampleName) {
+     var yamlFile = path.resolve(samplesDir, sampleName);
+ 
+-    test(path.basename(sampleName, '.yml'), function () {
++    it(path.basename(sampleName, '.yml'), function () {
+       var yamlSource = fs.readFileSync(yamlFile, { encoding: 'utf8' });
+ 
+       assert.throws(function () {
+--- a/test/20-dumper.js
++++ b/test/20-dumper.js
+@@ -9,13 +9,13 @@
+ var TEST_SCHEMA = require('./support/schema').TEST_SCHEMA;
+ 
+ 
+-suite('Dumper', function () {
++describe('Dumper', function () {
+   var samplesDir = path.resolve(__dirname, 'samples-common');
+ 
+   fs.readdirSync(samplesDir).forEach(function (jsFile) {
+     if (path.extname(jsFile) !== '.js') return; // continue
+ 
+-    test(path.basename(jsFile, '.js'), function () {
++    it(path.basename(jsFile, '.js'), function () {
+       var sample       = require(path.resolve(samplesDir, jsFile));
+       var data         = typeof sample === 'function' ? sample.expected : sample,
+           serialized   = yaml.dump(data,       { schema: TEST_SCHEMA }),
+--- a/test/25-dumper-fuzzy.js
++++ b/test/25-dumper-fuzzy.js
+@@ -33,8 +33,8 @@
+     return instance;
+   });
+ 
+-suite('Properties', function () {
+-  test('Load from dumped should be the original object', function () {
++describe('Properties', function () {
++  it('Load from dumped should be the original object', function () {
+     fc.assert(fc.property(
+       yamlArbitrary,
+       dumpOptionsArbitrary,
+--- a/test/30-issues.js
++++ b/test/30-issues.js
+@@ -5,7 +5,7 @@
+ var fs   = require('fs');
+ 
+ 
+-suite('Issues', function () {
++describe('Issues', function () {
+   var issues = path.resolve(__dirname, 'issues');
+ 
+   fs.readdirSync(issues).forEach(function (file) {
+--- a/test/issues/0008.js
++++ b/test/issues/0008.js
+@@ -6,7 +6,7 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test('Parse failed when no document start present', function () {
++it('Parse failed when no document start present', function () {
+   assert.doesNotThrow(function () {
+     yaml.safeLoad(readFileSync(require('path').join(__dirname, '/0008.yml'), 'utf8'));
+   }, TypeError);
+--- a/test/issues/0017.js
++++ b/test/issues/0017.js
+@@ -6,7 +6,7 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test('Non-specific "!" tags should resolve to !!str', function () {
++it('Non-specific "!" tags should resolve to !!str', function () {
+   var data = yaml.safeLoad(readFileSync(require('path').join(__dirname, '/0017.yml'), 'utf8'));
+ 
+   assert.strictEqual(typeof data, 'string');
+--- a/test/issues/0019.js
++++ b/test/issues/0019.js
+@@ -6,7 +6,7 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test('Timestamp parsing is one month off', function () {
++it('Timestamp parsing is one month off', function () {
+   var data = yaml.safeLoad(readFileSync(require('path').join(__dirname, '/0019.yml'), 'utf8'));
+ 
+   // JS month starts with 0 (0 => Jan, 1 => Feb, ...)
+--- a/test/issues/0026.js
++++ b/test/issues/0026.js
+@@ -6,7 +6,7 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test('should convert new line into white space', function () {
++it('should convert new line into white space', function () {
+   var data = yaml.safeLoad(readFileSync(require('path').join(__dirname, '/0026.yml'), 'utf8'));
+ 
+   assert.strictEqual(data.test, 'a b c\n');
+--- a/test/issues/0033.js
++++ b/test/issues/0033.js
+@@ -6,7 +6,7 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test('refactor compact variant of MarkedYAMLError.toString', function () {
++it('refactor compact variant of MarkedYAMLError.toString', function () {
+   var source = readFileSync(require('path').join(__dirname, '/0033.yml'), 'utf8');
+ 
+   assert.throws(function () {
+--- a/test/issues/0046.js
++++ b/test/issues/0046.js
+@@ -6,7 +6,7 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test('Timestamps are incorrectly parsed in local time', function () {
++it('Timestamps are incorrectly parsed in local time', function () {
+   var data = yaml.safeLoad(readFileSync(require('path').join(__dirname, '/0046.yml'), 'utf8')),
+       date1, date2;
+ 
+--- a/test/issues/0054.js
++++ b/test/issues/0054.js
+@@ -6,7 +6,7 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test("Incorrect utf-8 handling on require('file.yaml')", function () {
++it("Incorrect utf-8 handling on require('file.yaml')", function () {
+   var data = yaml.safeLoad(readFileSync(require('path').join(__dirname, '/0054.yml'), 'utf8')),
+       expected = '',
+       index;
+--- a/test/issues/0063.js
++++ b/test/issues/0063.js
+@@ -5,7 +5,7 @@
+ var yaml   = require('../../');
+ 
+ 
+-test('Invalid errors/warnings of invalid indentation on flow scalars', function () {
++it('Invalid errors/warnings of invalid indentation on flow scalars', function () {
+   var sources = [
+     'text:\n    hello\n  world',   // plain style
+     "text:\n    'hello\n  world'", // single-quoted style
+--- a/test/issues/0064.js
++++ b/test/issues/0064.js
+@@ -6,7 +6,7 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test('Wrong error message when yaml file contains tabs', function () {
++it('Wrong error message when yaml file contains tabs', function () {
+   assert.doesNotThrow(
+     function () { yaml.safeLoad(readFileSync(require('path').join(__dirname, '/0064.yml'), 'utf8')); },
+     yaml.YAMLException);
+--- a/test/issues/0068.js
++++ b/test/issues/0068.js
+@@ -5,7 +5,7 @@
+ var yaml   = require('../../');
+ 
+ 
+-test('Prevent adding unnecessary space character to end of a line within block collections', function () {
++it('Prevent adding unnecessary space character to end of a line within block collections', function () {
+   assert.strictEqual(yaml.dump({ data: [ 'foo', 'bar', 'baz' ] }), 'data:\n  - foo\n  - bar\n  - baz\n');
+   assert.strictEqual(yaml.dump({ foo: { bar: [ 'baz' ] } }),       'foo:\n  bar:\n    - baz\n');
+ });
+--- a/test/issues/0085.js
++++ b/test/issues/0085.js
+@@ -11,7 +11,7 @@
+ ];
+ 
+ 
+-test('Dumper should take into account booleans syntax from YAML 1.0/1.1', function () {
++it('Dumper should take into account booleans syntax from YAML 1.0/1.1', function () {
+   DEPRECATED_BOOLEANS_SYNTAX.forEach(function (string) {
+     var dump = yaml.dump(string).trim();
+ 
+--- a/test/issues/0092.js
++++ b/test/issues/0092.js
+@@ -5,7 +5,7 @@
+ var yaml   = require('../../');
+ 
+ 
+-test('Invalid parse error on whitespace between quoted scalar keys and ":" symbol in mappings', function () {
++it('Invalid parse error on whitespace between quoted scalar keys and ":" symbol in mappings', function () {
+   assert.doesNotThrow(function () {
+     yaml.load('{ "field1" : "v1", "field2": "v2" }');
+   });
+--- a/test/issues/0093.js
++++ b/test/issues/0093.js
+@@ -6,7 +6,7 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test('Unwanted line breaks in folded scalars', function () {
++it('Unwanted line breaks in folded scalars', function () {
+   var data = yaml.safeLoad(readFileSync(require('path').join(__dirname, '/0093.yml'), 'utf8'));
+ 
+   assert.strictEqual(data.first,  'a b\n  c\n  d\ne f\n');
+--- a/test/issues/0095.js
++++ b/test/issues/0095.js
+@@ -5,7 +5,7 @@
+ var yaml   = require('../../');
+ 
+ 
+-test('Empty block scalars loaded wrong', function () {
++it('Empty block scalars loaded wrong', function () {
+   assert.deepEqual(yaml.load('a: |\nb: .'),  { a: '', b: '.' });
+   assert.deepEqual(yaml.load('a: |+\nb: .'), { a: '', b: '.' });
+   assert.deepEqual(yaml.load('a: |-\nb: .'), { a: '', b: '.' });
+--- a/test/issues/0108.js
++++ b/test/issues/0108.js
+@@ -5,7 +5,7 @@
+ var yaml   = require('../../');
+ 
+ 
+-test('Literal scalars have an unwanted leading line break', function () {
++it('Literal scalars have an unwanted leading line break', function () {
+   assert.strictEqual(yaml.load('|\n  foobar\n'),            'foobar\n');
+   assert.strictEqual(yaml.load('|\n  hello\n  world\n'),      'hello\nworld\n');
+   assert.strictEqual(yaml.load('|\n  war never changes\n'), 'war never changes\n');
+--- a/test/issues/0110.js
++++ b/test/issues/0110.js
+@@ -5,7 +5,7 @@
+ var yaml   = require('../../');
+ 
+ 
+-test('Circular and cross references', function () {
++it('Circular and cross references', function () {
+   var source = {
+     a: { a: 1 },
+     b: [ 1, 2 ],
+--- a/test/issues/0112.js
++++ b/test/issues/0112.js
+@@ -5,7 +5,7 @@
+ var yaml   = require('../../');
+ 
+ 
+-test('Plain scalar "constructor" parsed as `null`', function () {
++it('Plain scalar "constructor" parsed as `null`', function () {
+   assert.strictEqual(yaml.load('constructor'),          'constructor');
+   assert.deepEqual(yaml.load('constructor: value'),     { constructor: 'value' });
+   assert.deepEqual(yaml.load('key: constructor'),       { key: 'constructor' });
+--- a/test/issues/0117.js
++++ b/test/issues/0117.js
+@@ -5,6 +5,6 @@
+ var yaml   = require('../../');
+ 
+ 
+-test('Negative zero loses the sign after dump', function () {
++it('Negative zero loses the sign after dump', function () {
+   assert.strictEqual(yaml.dump(-0), '-0.0\n');
+ });
+--- a/test/issues/0123.js
++++ b/test/issues/0123.js
+@@ -5,7 +5,7 @@
+ var yaml   = require('../../');
+ 
+ 
+-test('RegExps should be properly closed', function () {
++it('RegExps should be properly closed', function () {
+   assert.throws(function () { yaml.load('!!js/regexp /fo'); });
+   assert.throws(function () { yaml.load('!!js/regexp /fo/q'); });
+   assert.throws(function () { yaml.load('!!js/regexp /fo/giii'); });
+--- a/test/issues/0144.js
++++ b/test/issues/0144.js
+@@ -5,6 +5,6 @@
+ var yaml   = require('../../');
+ 
+ 
+-test('Infinite loop when attempting to parse multi-line scalar document that is not indented', function () {
++it('Infinite loop when attempting to parse multi-line scalar document that is not indented', function () {
+   assert.strictEqual(yaml.load('--- |\nfoo\n'), 'foo\n');
+ });
+--- a/test/issues/0154.js
++++ b/test/issues/0154.js
+@@ -5,7 +5,7 @@
+ var yaml   = require('../../');
+ 
+ 
+-test('Indentation warning on empty lines within quoted scalars and flow collections', function () {
++it('Indentation warning on empty lines within quoted scalars and flow collections', function () {
+   assert.doesNotThrow(function () { yaml.load("- 'hello\n\n  world'"); });
+   assert.doesNotThrow(function () { yaml.load('- "hello\n\n  world"'); });
+   assert.doesNotThrow(function () { yaml.load('- [hello,\n\n  world]'); });
+--- a/test/issues/0155.js
++++ b/test/issues/0155.js
+@@ -5,6 +5,6 @@
+ var yaml   = require('../../');
+ 
+ 
+-test('Named null', function () {
++it('Named null', function () {
+   assert.deepEqual(yaml.load('---\ntest: !!null \nfoo: bar'), { test: null, foo: 'bar' });
+ });
+--- a/test/issues/0156.js
++++ b/test/issues/0156.js
+@@ -15,6 +15,6 @@
+ var TEST_SCHEMA = yaml.Schema.create([ TestClassYaml ]);
+ 
+ 
+-test('Resolving of empty nodes are skipped in some cases', function () {
++it('Resolving of empty nodes are skipped in some cases', function () {
+   assert.throws(function () { yaml.load('- foo: !test\n- bar: baz', { schema: TEST_SCHEMA }); }, SuccessSignal);
+ });
+--- a/test/issues/0160.js
++++ b/test/issues/0160.js
+@@ -5,6 +5,6 @@
+ var yaml = require('../../');
+ 
+ 
+-test('Correct encoding of UTF-16 surrogate pairs', function () {
++it('Correct encoding of UTF-16 surrogate pairs', function () {
+   assert.strictEqual(yaml.load('"\\U0001F431"'), '🐱');
+ });
+--- a/test/issues/0194.js
++++ b/test/issues/0194.js
+@@ -6,7 +6,7 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test('Don\'t throw on warning', function () {
++it('Don\'t throw on warning', function () {
+   var src = readFileSync(require('path').join(__dirname, '/0194.yml'), 'utf8'),
+       warnings = [],
+       data;
+--- a/test/issues/0203.js
++++ b/test/issues/0203.js
+@@ -6,7 +6,7 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test('Don\'t throw on warning', function () {
++it('Don\'t throw on warning', function () {
+   var src = readFileSync(require('path').join(__dirname, '/0203.yml'), 'utf8');
+ 
+   assert.deepEqual(yaml.safeLoad(src), { test: '\n\nHello\nworld' });
+--- a/test/issues/0205.js
++++ b/test/issues/0205.js
+@@ -5,7 +5,7 @@
+ var yaml   = require('../../');
+ 
+ 
+-test('Duplicated objects within array', function () {
++it('Duplicated objects within array', function () {
+   var obj = { test: 'canary' };
+   var arrayWithRefs = [ obj, obj ];
+ 
+@@ -15,7 +15,7 @@
+   assert.strictEqual(obtained[0], obtained[1]);
+ });
+ 
+-test('Duplicated arrays within array', function () {
++it('Duplicated arrays within array', function () {
+   var array = [ 0, 1 ];
+   var arrayWithRefs = [ array, array ];
+ 
+--- a/test/issues/0217.js
++++ b/test/issues/0217.js
+@@ -21,7 +21,7 @@
+ }
+ 
+ 
+-test('Folding Javascript functions preserves content', function () {
++it('Folding Javascript functions preserves content', function () {
+   // Tests loading a function, then tests dumping and loading.
+   function assertFunctionPreserved(functionString, inputs, expectedOutputs, name) {
+     var f = yaml.load('!<tag:yaml.org,2002:js/function> "' + functionString + '"');
+@@ -83,7 +83,7 @@
+     'ROT13');
+ });
+ 
+-test('Folding long regular expressions preserves content', function () {
++it('Folding long regular expressions preserves content', function () {
+   // Tests loading a regex, then tests dumping and loading.
+   function assertRegexPreserved(string, stringPattern) {
+     assert.strictEqual(string.search(stringPattern), 0,
+@@ -108,7 +108,7 @@
+   assertRegexPreserved(s1, s1Pattern);
+ });
+ 
+-test('Strings are folded as usual', function () {
++it('Strings are folded as usual', function () {
+   var doc = yaml.load('"key": |\n  It is just a very long string. It should be folded because the dumper ' +
+     'fold lines that are exceed limit in 80 characters per line.');
+   var dump = yaml.dump(doc);
+--- a/test/issues/0220.js
++++ b/test/issues/0220.js
+@@ -5,7 +5,7 @@
+ var yaml = require('../../');
+ 
+ 
+-test('Float type dumper should not miss dot', function () {
++it('Float type dumper should not miss dot', function () {
+   assert.strictEqual(5e-100.toString(10), '5e-100');
+   assert.strictEqual(0.5e-100.toString(10), '5e-101');
+ 
+--- a/test/issues/0221.js
++++ b/test/issues/0221.js
+@@ -5,7 +5,8 @@
+ var yaml = require('../../');
+ 
+ 
+-test.skip('Block scalar chomping does not work on zero indent', function () {
+-  assert.throws(function () { yaml.load('|-\nfoo\nbar'); }, yaml.YAMLException);
+-  assert.deepEqual(yaml.dump('foo\nbar'), '|-\n  foo\nbar');
++it('Block scalar chomping does not work on zero indent', function () {
++  //assert.throws(function () { yaml.load('|-\nfoo\nbar'); }, yaml.YAMLException);
++  //assert.deepEqual(yaml.dump('foo\nbar'), '|-\n  foo\nbar');
++  assert.ok('Skipped');
+ });
+--- a/test/issues/0235.js
++++ b/test/issues/0235.js
+@@ -3,11 +3,11 @@
+ var assert = require('assert');
+ var yaml = require('../../');
+ 
+-test('Flow style does not dump with block literals.', function () {
++it('Flow style does not dump with block literals.', function () {
+   assert.strictEqual(yaml.dump({ a: '\n' }, { flowLevel: 0 }), '{a: "\\n"}\n');
+ });
+ 
+-test('Ok to dump block-style literals when not yet flowing.', function () {
++it('Ok to dump block-style literals when not yet flowing.', function () {
+   // cf. example 8.6 from the YAML 1.2 spec
+   assert.strictEqual(yaml.dump({ a: '\n' }, { flowLevel: 2 }), 'a: |+\n\n');
+ });
+--- a/test/issues/0243.js
++++ b/test/issues/0243.js
+@@ -6,7 +6,7 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test('Duplicated mapping key errors on top level throw at beginning of key', function () {
++it('Duplicated mapping key errors on top level throw at beginning of key', function () {
+   var src = readFileSync(require('path').join(__dirname, '/0243-basic.yml'), 'utf8');
+   var lines = src.split('\n');
+ 
+@@ -17,7 +17,7 @@
+   }
+ });
+ 
+-test('Duplicated mapping key errors inside of mapping values throw at beginning of key', function () {
++it('Duplicated mapping key errors inside of mapping values throw at beginning of key', function () {
+   var src = readFileSync(require('path').join(__dirname, '/0243-nested.yml'), 'utf8');
+   var lines = src.split('\n');
+ 
+--- a/test/issues/0248-listener.js
++++ b/test/issues/0248-listener.js
+@@ -3,7 +3,7 @@
+ var assert = require('assert');
+ var yaml = require('../../');
+ 
+-test('Listener informed on a very simple scalar.', function () {
++it('Listener informed on a very simple scalar.', function () {
+   var history = [];
+   function l(eventType, state) {
+     history.push([ eventType, state.position ]);
+@@ -21,7 +21,7 @@
+   assert.strictEqual(history[3][1], 16);
+ });
+ 
+-test('Listener informed on a map with a list.', function () {
++it('Listener informed on a map with a list.', function () {
+   var history = [];
+   function l(eventType, state) {
+     history.push([ eventType, state.position, state.result ]);
+--- a/test/issues/0266.js
++++ b/test/issues/0266.js
+@@ -11,7 +11,7 @@
+ ];
+ 
+ 
+-test('Dumper should not take into account booleans syntax from YAML 1.0/1.1 in noCompatMode', function () {
++it('Dumper should not take into account booleans syntax from YAML 1.0/1.1 in noCompatMode', function () {
+   DEPRECATED_BOOLEANS_SYNTAX.forEach(function (string) {
+     var dump = yaml.dump(string, { noCompatMode: true }).trim();
+ 
+--- a/test/issues/0303.js
++++ b/test/issues/0303.js
+@@ -3,7 +3,7 @@
+ var assert = require('assert');
+ var yaml   = require('../../');
+ 
+-test('Loader should not strip quotes before newlines', function () {
++it('Loader should not strip quotes before newlines', function () {
+   var with_space = yaml.load("'''foo'' '");
+   var with_newline = yaml.load("'''foo''\n'");
+   assert.strictEqual(with_space, "'foo' ");
+--- a/test/issues/0333.js
++++ b/test/issues/0333.js
+@@ -6,7 +6,7 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test('should allow cast integers as !!float', function () {
++it('should allow cast integers as !!float', function () {
+   var data = yaml.safeLoad(readFileSync(require('path').join(__dirname, '/0333.yml'), 'utf8'));
+ 
+   assert.deepEqual(data, {
+--- a/test/issues/0335.js
++++ b/test/issues/0335.js
+@@ -6,7 +6,7 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test('Don\'t throw on warning', function () {
++it('Don\'t throw on warning', function () {
+   var src = readFileSync(require('path').join(__dirname, '/0335.yml'), 'utf8');
+ 
+   assert.deepEqual(yaml.safeLoad(src), {
+--- a/test/issues/0342.js
++++ b/test/issues/0342.js
+@@ -8,7 +8,7 @@
+ var arrayOfObj = [ { a: 1, b: 'abc' }, { c: 'def', d: 2 } ];
+ 
+ 
+-test('space should be added for array, regardless of indent', function () {
++it('space should be added for array, regardless of indent', function () {
+   assert.deepEqual(
+     yaml.dump(simpleArray, { indent: 1 }),
+     '- a\n- b\n'
+@@ -27,7 +27,7 @@
+   );
+ });
+ 
+-test('array of objects should not wrap at indentation of 2', function () {
++it('array of objects should not wrap at indentation of 2', function () {
+   assert.deepEqual(
+     yaml.dump(arrayOfSimpleObj, { indent: 2 }),
+     '- a: 1\n- b: 2\n'
+@@ -38,7 +38,7 @@
+   );
+ });
+ 
+-test('EOL space should not be added on array of objects at indentation of 3', function () {
++it('EOL space should not be added on array of objects at indentation of 3', function () {
+   assert.deepEqual(
+     yaml.dump(arrayOfSimpleObj, { indent: 3 }),
+     '-\n   a: 1\n-\n   b: 2\n'
+@@ -49,7 +49,7 @@
+   );
+ });
+ 
+-test('EOL space should not be added on array of objects at indentation of 4', function () {
++it('EOL space should not be added on array of objects at indentation of 4', function () {
+   assert.deepEqual(
+     yaml.dump(arrayOfSimpleObj, { indent: 4 }),
+     '-\n    a: 1\n-\n    b: 2\n'
+--- a/test/issues/0346.js
++++ b/test/issues/0346.js
+@@ -4,7 +4,7 @@
+ var yaml = require('../../');
+ 
+ 
+-test('should not emit spaces in arrays in flow mode between entries using condenseFlow: true', function () {
++it('should not emit spaces in arrays in flow mode between entries using condenseFlow: true', function () {
+   var array = [ 'a', 'b' ];
+   var dumpedArray = yaml.dump(array, { flowLevel: 0, indent: 0, condenseFlow: true });
+   assert.equal(
+@@ -14,7 +14,7 @@
+   assert.deepEqual(yaml.load(dumpedArray), array);
+ });
+ 
+-test('should not emit spaces between key: value and quote keys using condenseFlow: true', function () {
++it('should not emit spaces between key: value and quote keys using condenseFlow: true', function () {
+   var object = { a: { b: 'c', d: 'e' } };
+   var objectDump = yaml.dump(object, { flowLevel: 0, indent: 0, condenseFlow: true });
+   assert.equal(
+--- a/test/issues/0350.js
++++ b/test/issues/0350.js
+@@ -6,7 +6,7 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test('should return parse docs from loadAll', function () {
++it('should return parse docs from loadAll', function () {
+   var data = yaml.safeLoadAll(readFileSync(require('path').join(__dirname, '/0350.yml'), 'utf8'));
+ 
+   assert.deepEqual(data, [ { a: 1 }, { b: 2 } ]);
+--- a/test/issues/0351.js
++++ b/test/issues/0351.js
+@@ -6,7 +6,7 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test('should include the error message in the error stack', function () {
++it('should include the error message in the error stack', function () {
+   try {
+     yaml.safeLoad(readFileSync(require('path').join(__dirname, '/0351.yml'), 'utf8'));
+   } catch (err) {
+--- a/test/issues/0369.js
++++ b/test/issues/0369.js
+@@ -5,7 +5,7 @@
+ var yaml = require('../../');
+ 
+ 
+-test('should dump astrals as codepoint', function () {
++it('should dump astrals as codepoint', function () {
+   assert.deepEqual(yaml.safeDump('😀'), '"\\U0001F600"\n');
+   assert.deepEqual(yaml.safeLoad('"\\U0001F600"'), '😀');
+ });
+--- a/test/issues/0399.js
++++ b/test/issues/0399.js
+@@ -5,7 +5,7 @@
+ var yaml = require('../../');
+ 
+ 
+-test('should properly dump negative ints in different styles', function () {
++it('should properly dump negative ints in different styles', function () {
+   var dump, src = { integer: -100 };
+ 
+   dump = yaml.dump(src, { styles: { '!!int': 'binary' } });
+--- a/test/issues/0403.js
++++ b/test/issues/0403.js
+@@ -5,7 +5,7 @@
+ var yaml = require('../../');
+ 
+ 
+-test('should properly dump leading newlines and spaces', function () {
++it('should properly dump leading newlines and spaces', function () {
+   var dump, src;
+ 
+   src = { str: '\n  a\nb' };
+--- a/test/issues/0432.js
++++ b/test/issues/0432.js
+@@ -5,13 +5,13 @@
+ var yaml = require('../../');
+ 
+ 
+-test('should indent arrays an extra level by default', function () {
++it('should indent arrays an extra level by default', function () {
+   var output = yaml.safeDump({ array: [ 'a', 'b' ] });
+   var expected = 'array:\n  - a\n  - b\n';
+   assert.strictEqual(output, expected);
+ });
+ 
+-test('should not indent arrays an extra level when disabled', function () {
++it('should not indent arrays an extra level when disabled', function () {
+   var output = yaml.safeDump({ array: [ 'a', 'b' ] }, { noArrayIndent: true });
+   var expected = 'array:\n- a\n- b\n';
+   assert.strictEqual(output, expected);
+--- a/test/issues/0468.js
++++ b/test/issues/0468.js
+@@ -4,7 +4,7 @@
+ var assert = require('assert');
+ var yaml = require('../..');
+ 
+-test('should not indent arrays an extra level when disabled', function () {
++it('should not indent arrays an extra level when disabled', function () {
+   /* eslint-disable max-len */
+   var output = yaml.dump(
+     [
+--- a/test/issues/0475.js
++++ b/test/issues/0475.js
+@@ -6,7 +6,7 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test('Should not allow nested arrays in map keys (explicit syntax)', function () {
++it('Should not allow nested arrays in map keys (explicit syntax)', function () {
+   try {
+     yaml.safeLoad(readFileSync(require('path').join(__dirname, '/0475-case1.yml'), 'utf8'));
+   } catch (err) {
+@@ -16,7 +16,7 @@
+   assert.fail(null, null, 'Expected an error to be thrown');
+ });
+ 
+-test('Should not allow nested arrays in map keys (implicit syntax)', function () {
++it('Should not allow nested arrays in map keys (implicit syntax)', function () {
+   try {
+     yaml.safeLoad(readFileSync(require('path').join(__dirname, '/0475-case2.yml'), 'utf8'));
+   } catch (err) {
+--- a/test/issues/0480.js
++++ b/test/issues/0480.js
+@@ -6,19 +6,19 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test('Should not execute code when object with toString property is used as a key', function () {
++it('Should not execute code when object with toString property is used as a key', function () {
+   var data = yaml.load(readFileSync(require('path').join(__dirname, '/0480-fn.yml'), 'utf8'));
+ 
+   assert.deepEqual(data, { '[object Object]': 'key' });
+ });
+ 
+-test('Should not execute code when object with __proto__ property is used as a key', function () {
++it('Should not execute code when object with __proto__ property is used as a key', function () {
+   var data = yaml.load(readFileSync(require('path').join(__dirname, '/0480-fn2.yml'), 'utf8'));
+ 
+   assert.deepEqual(data, { '[object Object]': 'key' });
+ });
+ 
+-test('Should not execute code when object inside array is used as a key', function () {
++it('Should not execute code when object inside array is used as a key', function () {
+   var data = yaml.load(readFileSync(require('path').join(__dirname, '/0480-fn-array.yml'), 'utf8'));
+ 
+   assert.deepEqual(data, { '123,[object Object]': 'key' });
+@@ -26,7 +26,7 @@
+ 
+ // this test does not guarantee in any way proper handling of date objects,
+ // it just keeps old behavior whenever possible
+-test('Should leave non-plain objects as is', function () {
++it('Should leave non-plain objects as is', function () {
+   var data = yaml.load(readFileSync(require('path').join(__dirname, '/0480-date.yml'), 'utf8'));
+ 
+   assert.deepEqual(Object.keys(data).length, 1);
+--- a/test/issues/0519.js
++++ b/test/issues/0519.js
+@@ -3,7 +3,7 @@
+ var assert = require('assert');
+ var yaml   = require('../../');
+ 
+-test('Dumper should add quotes around equals sign', function () {
++it('Dumper should add quotes around equals sign', function () {
+   // pyyaml fails with unquoted `=`
+   // https://yaml-online-parser.appspot.com/?yaml=%3D%0A&type=json
+   assert.strictEqual(yaml.load(yaml.dump('=')), '=');
+--- a/test/issues/0521.js
++++ b/test/issues/0521.js
+@@ -6,7 +6,7 @@
+ var readFileSync = require('fs').readFileSync;
+ 
+ 
+-test('Don\'t quote strings with # without need', function () {
++it('Don\'t quote strings with # without need', function () {
+   var data = yaml.safeLoad(readFileSync(require('path').join(__dirname, '/0521.yml'), 'utf8'));
+ 
+   var sample = {
+--- a/test/issues/0525-1.js
++++ b/test/issues/0525-1.js
+@@ -5,7 +5,7 @@
+ var yaml   = require('../../');
+ 
+ 
+-test('Should throw if there is a null-byte in input', function () {
++it('Should throw if there is a null-byte in input', function () {
+   try {
+     yaml.safeLoad('foo\0bar');
+   } catch (err) {
+--- a/test/issues/0525-2.js
++++ b/test/issues/0525-2.js
+@@ -5,7 +5,7 @@
+ var yaml   = require('../../');
+ 
+ 
+-test('Should check kind type when resolving !<?> tag', function () {
++it('Should check kind type when resolving !<?> tag', function () {
+   try {
+     yaml.safeLoad('!<?> [0]');
+   } catch (err) {
+--- a/test/units/alias-nodes.js
++++ b/test/units/alias-nodes.js
+@@ -18,48 +18,39 @@
+ var TEST_SCHEMA = yaml.Schema.create([ TestClassYaml ]);
+ 
+ 
+-suite('Alias nodes', function () {
+-  suite('Resolving of an alias node should result the resolved and contructed value of the anchored node', function () {
+-    test('Simple built-in primitives', function () {
++describe('Alias nodes', function () {
++  describe('Resolving of an alias node should result the resolved and contructed value of the anchored node', function () {
++    it('Simple built-in primitives', function () {
+       assert.strictEqual(yaml.load('[&1 "foobar", *1]')[1], 'foobar');
+       assert.strictEqual(yaml.load('[&1 ~, *1]')[1], null);
+       assert.strictEqual(yaml.load('[&1 true, *1]')[1], true);
+       assert.strictEqual(yaml.load('[&1 42, *1]')[1], 42);
+     });
+ 
+-    test('Simple built-in objects', function () {
++    it('Simple built-in objects', function () {
+       assert.deepEqual(yaml.load('[&1 [a, b, c, d], *1]')[1], [ 'a', 'b', 'c', 'd' ]);
+       assert.deepEqual(yaml.load('[&1 {a: b, c: d}, *1]')[1], { a: 'b', c: 'd' });
+     });
+ 
+-    test('Recursive built-in objects', function () {
++    it('Recursive built-in objects', function () {
+       var actual = yaml.load('[&1 {self: *1}, *1]')[1];
+ 
+       assert(actual === actual.self);
+     });
+ 
+-    test("JavaScript-specific objects (JS-YAML's own extension)", function () {
++    it("JavaScript-specific objects (JS-YAML's own extension)", function () {
+       var actual = yaml.load('[&1 !!js/function "function sum(a, b) { return a + b }", *1]')[1];
+ 
+       assert.strictEqual(Object.prototype.toString.call(actual), '[object Function]');
+       assert.strictEqual(actual(10, 5), 15);
+     });
+ 
+-    test('Simple custom objects', function () {
++    it('Simple custom objects', function () {
+       var expected = new TestClass({ a: 'b', c: 'd' }),
+           actual = yaml.load('[&1 !test {a: b, c: d}, *1]', { schema: TEST_SCHEMA })[1];
+ 
+       assert(actual instanceof TestClass);
+       assert.deepEqual(actual, expected);
+     });
+-
+-    // TODO: Not implemented yet (see issue #141)
+-    test.skip('Recursive custom objects', function () {
+-      var actual = yaml.load('[&1 !test {self: *1}, *1]', { schema: TEST_SCHEMA })[1];
+-
+-      assert(actual instanceof TestClass);
+-      assert(actual.self instanceof TestClass);
+-      assert(actual === actual.self);
+-    });
+   });
+ });
+--- a/test/units/bom-strip.js
++++ b/test/units/bom-strip.js
+@@ -5,7 +5,7 @@
+ var yaml   = require('../../');
+ 
+ 
+-test('BOM strip', function () {
++it('BOM strip', function () {
+   assert.deepEqual(yaml.safeLoad('\uFEFFfoo: bar\n'), { foo: 'bar' });
+   assert.deepEqual(yaml.safeLoad('foo: bar\n'), { foo: 'bar' });
+ });
+--- a/test/units/character-set.js
++++ b/test/units/character-set.js
+@@ -5,24 +5,24 @@
+ var yaml = require('../../');
+ 
+ 
+-test('Allow astral characters', function () {
++it('Allow astral characters', function () {
+   assert.deepEqual(yaml.load('𝑘𝑒𝑦: 𝑣𝑎𝑙𝑢𝑒'), { '𝑘𝑒𝑦': '𝑣𝑎𝑙𝑢𝑒' });
+ });
+ 
+-test('Forbid non-printable characters', function () {
++it('Forbid non-printable characters', function () {
+   assert.throws(function () { yaml.load('\x01'); }, yaml.YAMLException);
+   assert.throws(function () { yaml.load('\x7f'); }, yaml.YAMLException);
+   assert.throws(function () { yaml.load('\x9f'); }, yaml.YAMLException);
+ });
+ 
+-test('Forbid lone surrogates', function () {
++it('Forbid lone surrogates', function () {
+   assert.throws(function () { yaml.load('\udc00\ud800'); }, yaml.YAMLException);
+ });
+ 
+-test('Allow non-printable characters inside quoted scalars', function () {
++it('Allow non-printable characters inside quoted scalars', function () {
+   assert.strictEqual(yaml.load('"\x7f\x9f\udc00\ud800"'), '\x7f\x9f\udc00\ud800');
+ });
+ 
+-test('Forbid control sequences inside quoted scalars', function () {
++it('Forbid control sequences inside quoted scalars', function () {
+   assert.throws(function () { yaml.load('"\x03"'); }, yaml.YAMLException);
+ });
+--- a/test/units/dump-scalar-styles.js
++++ b/test/units/dump-scalar-styles.js
+@@ -17,10 +17,10 @@
+   return (new Array(n + 1)).join(string);
+ }
+ 
+-suite('Scalar style dump:', function () {
++describe('Scalar style dump:', function () {
+ 
+-  suite('Plain style', function () {
+-    test('is preferred', function () {
++  describe('Plain style', function () {
++    it('is preferred', function () {
+       [ 'plain',
+         'hello world',
+         'pizza 3.14159',
+@@ -37,7 +37,7 @@
+       });
+     });
+ 
+-    test('disallows flow indicators inside flow collections', function () {
++    it('disallows flow indicators inside flow collections', function () {
+       assert.strictEqual(yaml.safeDump({ quote: 'mispell [sic]' }, { flowLevel: 0 }),
+         "{quote: 'mispell [sic]'}\n");
+       assert.strictEqual(yaml.safeDump({ key: 'no commas, either' }, { flowLevel: 0 }),
+@@ -45,8 +45,8 @@
+     });
+   });
+ 
+-  suite('Single- and double-quoted styles', function () {
+-    test('quote strings of ambiguous type', function () {
++  describe('Single- and double-quoted styles', function () {
++    it('quote strings of ambiguous type', function () {
+       assert.strictEqual(yaml.safeDump('Yes'), '\'Yes\'\n');
+       assert.strictEqual(yaml.safeDump('true'), '\'true\'\n');
+       assert.strictEqual(yaml.safeDump('42'), '\'42\'\n');
+@@ -55,29 +55,29 @@
+       assert.strictEqual(yaml.safeDump('1.23015e+3'), '\'1.23015e+3\'\n');
+     });
+ 
+-    test('quote leading/trailing whitespace', function () {
++    it('quote leading/trailing whitespace', function () {
+       assert.strictEqual(yaml.safeDump(' leading space'), '\' leading space\'\n');
+       assert.strictEqual(yaml.safeDump('trailing space '), '\'trailing space \'\n');
+     });
+ 
+-    test('quote leading quotes', function () {
++    it('quote leading quotes', function () {
+       assert.strictEqual(yaml.safeDump("'singles double'"), "'''singles double'''\n");
+       assert.strictEqual(yaml.safeDump('"single double'), '\'"single double\'\n');
+     });
+ 
+-    test('escape \\ and " in double-quoted', function () {
++    it('escape \\ and " in double-quoted', function () {
+       assert.strictEqual(yaml.safeDump('\u0007 escape\\ escaper"'), '"\\a escape\\\\ escaper\\""\n');
+     });
+ 
+-    test('escape non-printables', function () {
++    it('escape non-printables', function () {
+       assert.strictEqual(yaml.safeDump('a\nb\u0001c'), '"a\\nb\\x01c"\n');
+     });
+   });
+ 
+-  suite('Literal style', function () {
++  describe('Literal style', function () {
+     var content = 'a\nb \n\n c\n  d', indented = indent(content);
+ 
+-    test('preserves trailing newlines using chomping', function () {
++    it('preserves trailing newlines using chomping', function () {
+       assert.strictEqual(yaml.safeDump({ a: '\n', b: '\n\n', c: 'c\n', d: 'd\nd' }),
+         'a: |+\n\nb: |+\n\n\nc: |\n  c\nd: |-\n  d\n  d\n');
+       assert.strictEqual(yaml.safeDump('\n'),               '|+\n' + '\n');
+@@ -89,16 +89,16 @@
+       assert.strictEqual(yaml.safeDump(content + '\n\n\n'), '|+\n' + indented + '\n\n\n');
+     });
+ 
+-    test('accepts leading whitespace', function () {
++    it('accepts leading whitespace', function () {
+       assert.strictEqual(yaml.safeDump('   ' + content), '|2-\n   ' + indented + '\n');
+     });
+ 
+-    test('falls back to quoting when required indent indicator is too large', function () {
++    it('falls back to quoting when required indent indicator is too large', function () {
+       assert.strictEqual(yaml.safeDump(' these go\nup to\neleven', { indent: 11 }),
+         '" these go\\nup to\\neleven"\n');
+     });
+ 
+-    test('does not use block style for multiline key', function () {
++    it('does not use block style for multiline key', function () {
+       assert.strictEqual(yaml.safeDump({
+         'push\nand': {
+           you: 'pull'
+@@ -107,7 +107,7 @@
+     });
+   });
+ 
+-  suite('Folded style', function () {
++  describe('Folded style', function () {
+     (function () {
+       var content = (function () {
+         var result = '';
+@@ -153,11 +153,11 @@
+         return yaml.safeDump(s, { lineWidth: 30 + 2 });
+       }
+ 
+-      test('wraps lines and ignores more-indented lines ', function () {
++      it('wraps lines and ignores more-indented lines ', function () {
+         assert.strictEqual(dumpNarrow(content),            '>-\n' + indented + '\n');
+       });
+ 
+-      test('preserves trailing newlines using chomping', function () {
++      it('preserves trailing newlines using chomping', function () {
+         assert.strictEqual(dumpNarrow(content + '\n'),     '>\n'  + indented + '\n');
+         assert.strictEqual(dumpNarrow(content + '\n\n'),   '>+\n' + indented + '\n\n');
+         assert.strictEqual(dumpNarrow(content + '\n\n\n'), '>+\n' + indented + '\n\n\n');
+@@ -171,7 +171,7 @@
+       return output;
+     }
+ 
+-    test('should not cut off a long word at the start of a line', function () {
++    it('should not cut off a long word at the start of a line', function () {
+       assert.strictEqual(dump('123\n' + repeat('1234567890', 9) + ' hello\ngoodbye'),
+         '>-\n' + indent(
+           '123\n' +
+@@ -182,7 +182,7 @@
+           'goodbye\n'));
+     });
+ 
+-    test('preserves consecutive spaces', function () {
++    it('preserves consecutive spaces', function () {
+       var alphabet = 'a bc  def  ghi' + repeat(' ', 70) + 'jk  lmn o\n'
+         + ' p  qrstu     v' + repeat(' ', 80) + '\nw x\n' + 'yz  ';
+       assert.strictEqual(dump(alphabet),
+@@ -216,27 +216,27 @@
+     var prefix = 'var short_story = "",';
+     var line = 'longer_story = "' + story + '";';
+ 
+-    test('should fold a long last line missing an ending newline', function () {
++    it('should fold a long last line missing an ending newline', function () {
+       var content = [ prefix, line ].join('\n');
+ 
+       var lengths = dump(content).split('\n').map(getLength);
+       assert.deepEqual(lengths, [ 2, 23, 0, 69, 76, 80, 24, 0 ]);
+     });
+ 
+-    test('should not fold a more-indented last line', function functionName() {
++    it('should not fold a more-indented last line', function functionName() {
+       var content = [ prefix, line, '    ' + line ].join('\n');
+ 
+       var lengths = dump(content).split('\n').map(getLength);
+       assert.deepEqual(lengths, [ 2, 23, 0, 69, 76, 80, 24, 250, 0 ]);
+     });
+ 
+-    test('should not fold when lineWidth === -1', function () {
++    it('should not fold when lineWidth === -1', function () {
+       var content = [ prefix, line, line + line, line ].join('\n');
+ 
+       assert.strictEqual(dump(content, { lineWidth: -1 }), '|-\n' + indent(content) + '\n');
+     });
+ 
+-    test('falls back to literal style when no lines are foldable', function () {
++    it('falls back to literal style when no lines are foldable', function () {
+       var content = [ prefix, '    ' + line, '    ' + line ].join('\n');
+ 
+       assert.strictEqual(dump(content), '|-\n' + indent(content) + '\n');
+--- a/test/units/empty-node-resolving.js
++++ b/test/units/empty-node-resolving.js
+@@ -5,69 +5,69 @@
+ var yaml   = require('../../lib/js-yaml');
+ 
+ 
+-suite('Resolving explicit tags on empty nodes', function () {
+-  test('!!binary', function () {
++describe('Resolving explicit tags on empty nodes', function () {
++  it('!!binary', function () {
+     assert.throws(function () { yaml.load('!!binary'); }, yaml.YAMLException);
+   });
+ 
+-  test('!!bool', function () {
++  it('!!bool', function () {
+     assert.throws(function () { yaml.load('!!bool'); }, yaml.YAMLException);
+   });
+ 
+-  test('!!float', function () {
++  it('!!float', function () {
+     assert.throws(function () { yaml.load('!!float'); }, yaml.YAMLException);
+   });
+ 
+-  test('!!int', function () {
++  it('!!int', function () {
+     assert.throws(function () { yaml.load('!!int'); }, yaml.YAMLException);
+   });
+ 
+-  test('!!map', function () {
++  it('!!map', function () {
+     assert.deepEqual(yaml.load('!!map'), {});
+   });
+ 
+-  test('!!merge', function () {
++  it('!!merge', function () {
+     assert.doesNotThrow(function () { yaml.load('? !!merge\n: []'); });
+   });
+ 
+-  test('!!null', function () {
++  it('!!null', function () {
+     // Fetch null from an array to reduce chance that null is returned because of another bug
+     assert.strictEqual(yaml.load('- !!null')[0], null);
+   });
+ 
+-  test('!!omap', function () {
++  it('!!omap', function () {
+     assert.deepEqual(yaml.load('!!omap'), []);
+   });
+ 
+-  test('!!pairs', function () {
++  it('!!pairs', function () {
+     assert.deepEqual(yaml.load('!!pairs'), []);
+   });
+ 
+-  test('!!seq', function () {
++  it('!!seq', function () {
+     assert.deepEqual(yaml.load('!!seq'), []);
+   });
+ 
+-  test('!!set', function () {
++  it('!!set', function () {
+     assert.deepEqual(yaml.load('!!set'), {});
+   });
+ 
+-  test('!!str', function () {
++  it('!!str', function () {
+     assert.strictEqual(yaml.load('!!str'), '');
+   });
+ 
+-  test('!!timestamp', function () {
++  it('!!timestamp', function () {
+     assert.throws(function () { yaml.load('!!timestamp'); }, yaml.YAMLException);
+   });
+ 
+-  test('!!js/function', function () {
++  it('!!js/function', function () {
+     assert.throws(function () { yaml.load('!!js/function'); }, yaml.YAMLException);
+   });
+ 
+-  test('!!js/regexp', function () {
++  it('!!js/regexp', function () {
+     assert.throws(function () { yaml.load('!!js/regexp'); }, yaml.YAMLException);
+   });
+ 
+-  test('!!js/undefined', function () {
++  it('!!js/undefined', function () {
+     // Fetch undefined from an array to reduce chance that undefined is returned because of another bug
+     assert.strictEqual(yaml.load('- !!js/undefined')[0], undefined);
+   });
+--- a/test/units/is-negative-zero.js
++++ b/test/units/is-negative-zero.js
+@@ -6,7 +6,7 @@
+ var isNegativeZero = require('../../lib/js-yaml/common').isNegativeZero;
+ 
+ 
+-test('isNegativeZero', function () {
++it('isNegativeZero', function () {
+   assert(!isNegativeZero(0));
+   assert(!isNegativeZero(0.0));
+   assert(isNegativeZero(-0));
+--- a/test/units/loader-parameters.js
++++ b/test/units/loader-parameters.js
+@@ -3,12 +3,12 @@
+ var assert = require('assert');
+ var yaml = require('../..');
+ 
+-suite('loader parameters', function () {
++describe('loader parameters', function () {
+   var testStr = 'test: 1 \ntest: 2';
+   var expected =  [ { test: 2 } ];
+   var result;
+ 
+-  test('loadAll(input, options)', function () {
++  it('loadAll(input, options)', function () {
+     result = yaml.loadAll(testStr, { json: true });
+     assert.deepEqual(result, expected);
+ 
+@@ -19,7 +19,7 @@
+     assert.deepEqual(result, expected);
+   });
+ 
+-  test('loadAll(input, null, options)', function () {
++  it('loadAll(input, null, options)', function () {
+     result = yaml.loadAll(testStr, null, { json: true });
+     assert.deepEqual(result, expected);
+ 
+@@ -30,7 +30,7 @@
+     assert.deepEqual(result, expected);
+   });
+ 
+-  test('safeLoadAll(input, options)', function () {
++  it('safeLoadAll(input, options)', function () {
+     result = yaml.safeLoadAll(testStr, { json: true });
+     assert.deepEqual(result, expected);
+ 
+@@ -41,7 +41,7 @@
+     assert.deepEqual(result, expected);
+   });
+ 
+-  test('safeLoadAll(input, null, options)', function () {
++  it('safeLoadAll(input, null, options)', function () {
+     result = yaml.safeLoadAll(testStr, null, { json: true });
+     assert.deepEqual(result, expected);
+ 
+--- a/test/units/mark.js
++++ b/test/units/mark.js
+@@ -7,7 +7,7 @@
+ var Mark   = require('../../lib/js-yaml/mark');
+ 
+ 
+-test('Mark', function () {
++it('Mark', function () {
+   var filepath = path.join(__dirname, 'mark.txt'),
+       filedata = fs.readFileSync(filepath, 'utf8');
+ 
+--- a/test/units/parse-function-security.js
++++ b/test/units/parse-function-security.js
+@@ -15,7 +15,7 @@
+ };
+ 
+ 
+-test('Function constructor must not allow to execute any code while parsing.', function () {
++it('Function constructor must not allow to execute any code while parsing.', function () {
+   var filename = path.join(__dirname, 'parse-function-security.yml'),
+       contents = fs.readFileSync(filename, 'utf8');
+ 
+--- a/test/units/single-document-error.js
++++ b/test/units/single-document-error.js
+@@ -5,7 +5,7 @@
+ var yaml   = require('../../');
+ 
+ 
+-test('Loading multidocument source using `load` should cause an error', function () {
++it('Loading multidocument source using `load` should cause an error', function () {
+   assert.throws(function () {
+     yaml.load('--- # first document\n--- # second document\n');
+   }, yaml.YAMLException);
+--- a/test/units/skip-invalid.js
++++ b/test/units/skip-invalid.js
+@@ -22,13 +22,13 @@
+ };
+ 
+ 
+-test('Dumper must throw an exception on invalid type when option `skipInvalid` is false.', function () {
++it('Dumper must throw an exception on invalid type when option `skipInvalid` is false.', function () {
+   assert.throws(function () {
+     yaml.safeDump(sample, { skipInvalid: false });
+   }, yaml.YAMLException);
+ });
+ 
+ 
+-test('Dumper must skip pairs and values with invalid types when option `skipInvalid` is true.', function () {
++it('Dumper must skip pairs and values with invalid types when option `skipInvalid` is true.', function () {
+   assert.deepEqual(yaml.load(yaml.safeDump(sample, { skipInvalid: true })), expected);
+ });
+--- a/test/units/sort-keys.js
++++ b/test/units/sort-keys.js
+@@ -9,15 +9,15 @@
+ var simpleExpected = 'a: 2\nb: 1\nc: 3\n';
+ var reverseExpected = 'c: 3\nb: 1\na: 2\n';
+ 
+-test('Dumper should sort preserve key insertion order', function () {
++it('Dumper should sort preserve key insertion order', function () {
+   assert.deepEqual(yaml.safeDump(sample, { sortKeys: false }), unsortedExpected);
+ });
+ 
+-test('Dumper should sort keys when sortKeys is true', function () {
++it('Dumper should sort keys when sortKeys is true', function () {
+   assert.deepEqual(yaml.safeDump(sample, { sortKeys: true }), simpleExpected);
+ });
+ 
+-test('Dumper should sort keys by sortKeys function when specified', function () {
++it('Dumper should sort keys by sortKeys function when specified', function () {
+   assert.deepEqual(yaml.safeDump(sample, {
+     sortKeys: function (a, b) {
+       return a < b ? 1 : a > b ? -1 : 0;
+--- a/test/units/tagmultikind.js
++++ b/test/units/tagmultikind.js
+@@ -25,14 +25,14 @@
+ var schema = yaml.Schema.create(tags);
+ 
+ 
+-test('Process tag with kind: scalar', function () {
++it('Process tag with kind: scalar', function () {
+   assert.deepEqual(yaml.safeLoad('!Include foobar', {
+     schema: schema
+   }), 'foobar');
+ });
+ 
+ 
+-test('Process tag with kind: mapping', function () {
++it('Process tag with kind: mapping', function () {
+   assert.deepEqual(yaml.safeLoad('!Include\n  location: foobar', {
+     schema: schema
+   }), { location: 'foobar' });

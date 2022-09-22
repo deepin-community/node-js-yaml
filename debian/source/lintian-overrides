@@ -1,0 +1,19 @@
+# Overriding false positive for construct-binary.js test file. The
+# long lines are actually test data. There are several bugs against
+# lintian asking to allow long lines in certain cases.
+source: very-long-line-length-in-source-file test/samples-common/construct-binary.js line length is 620 characters (>512)
+source: source-contains-prebuilt-javascript-object test/samples-common/construct-binary.js line length is 618 characters (>512)
+source: source-is-missing test/samples-common/construct-binary.js line length is 618 characters (>512)
+very-long-line-length-in-source-file debian/tests/test_modules/fast-check/lib/bundle.js line length is 866 characters (>512)
+source-contains-prebuilt-javascript-object debian/tests/test_modules/fast-check/lib/bundle.js line length is 866 characters (>512)
+source-is-missing debian/tests/test_modules/fast-check/lib/bundle.js line length is 866 characters (>512)
+very-long-line-length-in-source-file debian/tests/test_modules/fast-check/lib/check/arbitrary/ObjectArbitrary.js line length is 542 characters (>512)
+source-contains-prebuilt-javascript-object debian/tests/test_modules/fast-check/lib/check/arbitrary/ObjectArbitrary.js line length is 530 characters (>512)
+source-is-missing debian/tests/test_modules/fast-check/lib/check/arbitrary/ObjectArbitrary.js line length is 530 characters (>512)
+very-long-line-length-in-source-file debian/tests/test_modules/fast-check/lib/check/arbitrary/TupleArbitrary.generated.js line length is 539 characters (>512)
+source-contains-prebuilt-javascript-object debian/tests/test_modules/fast-check/lib/check/arbitrary/TupleArbitrary.generated.js line length is 531 characters (>512)
+source-is-missing debian/tests/test_modules/fast-check/lib/check/arbitrary/TupleArbitrary.generated.js line length is 531 characters (>512)
+source-contains-prebuilt-javascript-object debian/tests/test_modules/fast-check/lib/check/property/AsyncProperty.generated.js line length is 399 characters (>256)
+source-is-missing debian/tests/test_modules/fast-check/lib/check/property/AsyncProperty.generated.js line length is 399 characters (>256)
+source-contains-prebuilt-javascript-object debian/tests/test_modules/fast-check/lib/check/property/Property.generated.js line length is 389 characters (>256)
+source-is-missing debian/tests/test_modules/fast-check/lib/check/property/Property.generated.js line length is 389 characters (>256)

@@ -1,0 +1,26 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	# Prevent makefile from being used. Eslint is not in Debian.
+
+override_dh_fixperms:
+	dh_fixperms
+	chmod +x debian/node-js-yaml/usr/share/nodejs/js-yaml/bin/js-yaml.js
+
+override_dh_installman:
+ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS) $(DEB_BUILD_PROFILES)))
+	help2man --no-info --name "JavaScript YAML parser and dumper" --include=debian/help2man.include bin/js-yaml.js > debian/js-yaml.1
+	dh_installman
+else
+skipped_dh_installman:
+	@echo '**********************************************************'
+	@echo 'Skip installing man                                       '
+	@echo '**********************************************************'
+endif

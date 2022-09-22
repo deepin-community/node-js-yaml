@@ -1,0 +1,8 @@
+As the browserified version of js-yaml is not guarantied to work,
+and cannot be build from source in Debian due to Browserify not
+yet being packaged for Debian, the dist/ directory has been excluded
+from the tarball.
+
+Files Excluded: is used in debian/copyright, so a standard uscan
+should be enough to obtain and repack the tarball for the next
+upstream release.
