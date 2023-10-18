@@ -1,12 +1,12 @@
 version=4
 opts=\
 dversionmangle=auto,\
-filenamemangle=s/.*\/v?([\d\.-]+)\.tar\.gz/js-yaml-$1.tar.gz/,\
+filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/node-js-yaml-$1/,\
 repacksuffix=+dfsg \
 https://github.com/nodeca/js-yaml/tags \
-.*/archive/v?([\d\.]+).tar.gz group
+.*?(\d[\d\.]*)@ARCHIVE_EXT@ group
 
 # It is not recommended use npmregistry. Please investigate more.
 # Take a look at https://wiki.debian.org/debian/watch/
-opts="searchmode=plain,component=types-js-yaml,ctype=nodejs,pgpmode=none" \
+opts="searchmode=plain,component=types-js-yaml,ctype=nodejs,pgpmode=none,filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/nodei-types-js-yaml-$1/" \
  https://registry.npmjs.org/@types/js-yaml https://registry.npmjs.org/@types/js-yaml/-/js-yaml-([\d\.]+)@ARCHIVE_EXT@ group

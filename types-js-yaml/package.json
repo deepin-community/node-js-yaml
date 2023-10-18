@@ -1,7 +1,8 @@
 {
     "name": "@types/js-yaml",
-    "version": "3.12.6",
+    "version": "4.0.5",
     "description": "TypeScript definitions for js-yaml",
+    "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/js-yaml",
     "license": "MIT",
     "contributors": [
         {
@@ -18,6 +19,16 @@
             "name": "ExE Boss",
             "url": "https://github.com/ExE-Boss",
             "githubUsername": "ExE-Boss"
+        },
+        {
+            "name": "Armaan Tobaccowalla",
+            "url": "https://github.com/ArmaanT",
+            "githubUsername": "ArmaanT"
+        },
+        {
+            "name": "Linus Unnebäck",
+            "url": "https://github.com/LinusU",
+            "githubUsername": "LinusU"
         }
     ],
     "main": "",
@@ -29,6 +40,14 @@
     },
     "scripts": {},
     "dependencies": {},
-    "typesPublisherContentHash": "a48c02f4d357d44c342529a32c599a09649d7bbd763fc4ce7060817c07697b7d",
-    "typeScriptVersion": "3.3"
+    "typesPublisherContentHash": "6f40877154edac83ffa22d53a6aca74f151a0d094074c81ce7fb21df57ea5725",
+    "typeScriptVersion": "3.8",
+    "exports": {
+        ".": {
+            "types": {
+                "import": "./index.d.mts",
+                "default": "./index.d.ts"
+            }
+        }
+    }
 }

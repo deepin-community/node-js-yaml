@@ -8,7 +8,7 @@
 	dh $@
 
 override_dh_auto_build:
-	# Prevent makefile from being used. Eslint is not in Debian.
+	rollup -c support/rollup.config.js
 
 override_dh_fixperms:
 	dh_fixperms

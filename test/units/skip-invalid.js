@@ -7,7 +7,6 @@ var yaml   = require('../../');
 
 var sample = {
   number: 42,
-  undef:  undefined,
   string: 'hello',
   func:   function (a, b) { return a + b; },
   regexp: /^hel+o/,
@@ -22,13 +21,13 @@ var expected = {
 };
 
 
-test('Dumper must throw an exception on invalid type when option `skipInvalid` is false.', function () {
+it('Dumper must throw an exception on invalid type when option `skipInvalid` is false.', function () {
   assert.throws(function () {
-    yaml.safeDump(sample, { skipInvalid: false });
+    yaml.dump(sample, { skipInvalid: false });
   }, yaml.YAMLException);
 });
 
 
-test('Dumper must skip pairs and values with invalid types when option `skipInvalid` is true.', function () {
-  assert.deepEqual(yaml.load(yaml.safeDump(sample, { skipInvalid: true })), expected);
+it('Dumper must skip pairs and values with invalid types when option `skipInvalid` is true.', function () {
+  assert.deepStrictEqual(yaml.load(yaml.dump(sample, { skipInvalid: true })), expected);
 });

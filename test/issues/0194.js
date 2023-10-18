@@ -3,19 +3,22 @@
 
 var assert = require('assert');
 var yaml = require('../../');
-var readFileSync = require('fs').readFileSync;
 
 
-test('Don\'t throw on warning', function () {
-  var src = readFileSync(require('path').join(__dirname, '/0194.yml'), 'utf8'),
-      warnings = [],
+it('Don\'t throw on warning', function () {
+  var src = `
+foo: {
+    bar: true
+}
+`;
+  var warnings = [],
       data;
 
-  data = yaml.safeLoad(src);
+  data = yaml.load(src);
 
-  assert.deepEqual(data, { foo: { bar: true } });
+  assert.deepStrictEqual(data, { foo: { bar: true } });
 
-  yaml.safeLoad(src, { onWarning: function (e) { warnings.push(e); } });
+  yaml.load(src, { onWarning: function (e) { warnings.push(e); } });
 
   assert.strictEqual(warnings.length, 1);
 });

@@ -3,6 +3,17 @@ env:
   browser:  true
   es6:      false
 
+globals:
+  Uint8Array: false
+
+ignorePatterns:
+  - coverage/
+  - demo/
+  - dist/
+  - node_modules
+  - benchmark/implementations
+  - rollup.config.js
+
 rules:
   accessor-pairs:         2
   array-bracket-spacing:  [ 2, "always", { "singleValue": true, "objectsInArrays": true, "arraysInArrays": true } ]
@@ -120,7 +131,7 @@ rules:
   #spaced-comment:         [ 1, always, { exceptions: [ '/', '=' ] } ]
   strict:                 [ 2, global ]
   quotes:                 [ 2, single, avoid-escape ]
-  quote-props:            [ 1, 'as-needed', { "keywords": true } ]
+  quote-props:            [ 1, 'as-needed' ]
   radix:                  2
   use-isnan:              2
   valid-typeof:           2

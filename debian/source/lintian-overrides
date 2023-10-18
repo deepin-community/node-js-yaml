@@ -1,19 +1,26 @@
+# Match types-*/*
+add-component-copyright types-js-yaml *
 # Overriding false positive for construct-binary.js test file. The
 # long lines are actually test data. There are several bugs against
 # lintian asking to allow long lines in certain cases.
-source: very-long-line-length-in-source-file test/samples-common/construct-binary.js line length is 620 characters (>512)
-source: source-contains-prebuilt-javascript-object test/samples-common/construct-binary.js line length is 618 characters (>512)
-source: source-is-missing test/samples-common/construct-binary.js line length is 618 characters (>512)
-very-long-line-length-in-source-file debian/tests/test_modules/fast-check/lib/bundle.js line length is 866 characters (>512)
-source-contains-prebuilt-javascript-object debian/tests/test_modules/fast-check/lib/bundle.js line length is 866 characters (>512)
-source-is-missing debian/tests/test_modules/fast-check/lib/bundle.js line length is 866 characters (>512)
-very-long-line-length-in-source-file debian/tests/test_modules/fast-check/lib/check/arbitrary/ObjectArbitrary.js line length is 542 characters (>512)
-source-contains-prebuilt-javascript-object debian/tests/test_modules/fast-check/lib/check/arbitrary/ObjectArbitrary.js line length is 530 characters (>512)
-source-is-missing debian/tests/test_modules/fast-check/lib/check/arbitrary/ObjectArbitrary.js line length is 530 characters (>512)
-very-long-line-length-in-source-file debian/tests/test_modules/fast-check/lib/check/arbitrary/TupleArbitrary.generated.js line length is 539 characters (>512)
-source-contains-prebuilt-javascript-object debian/tests/test_modules/fast-check/lib/check/arbitrary/TupleArbitrary.generated.js line length is 531 characters (>512)
-source-is-missing debian/tests/test_modules/fast-check/lib/check/arbitrary/TupleArbitrary.generated.js line length is 531 characters (>512)
-source-contains-prebuilt-javascript-object debian/tests/test_modules/fast-check/lib/check/property/AsyncProperty.generated.js line length is 399 characters (>256)
-source-is-missing debian/tests/test_modules/fast-check/lib/check/property/AsyncProperty.generated.js line length is 399 characters (>256)
-source-contains-prebuilt-javascript-object debian/tests/test_modules/fast-check/lib/check/property/Property.generated.js line length is 389 characters (>256)
-source-is-missing debian/tests/test_modules/fast-check/lib/check/property/Property.generated.js line length is 389 characters (>256)
+source-is-missing debian/tests/test_modules/fast-check/lib/bundle.js
+source-is-missing debian/tests/test_modules/fast-check/lib/check/arbitrary/ObjectArbitrary.js
+source-is-missing debian/tests/test_modules/fast-check/lib/check/arbitrary/TupleArbitrary.generated.js
+source-is-missing debian/tests/test_modules/fast-check/lib/check/property/AsyncProperty.generated.js
+source-is-missing debian/tests/test_modules/fast-check/lib/check/property/Property.generated.js
+source-is-missing test/samples-common/construct-binary.js
+source-contains-prebuilt-javascript-object debian/tests/test_modules/fast-check/lib/bundle.js
+source-contains-prebuilt-javascript-object debian/tests/test_modules/fast-check/lib/check/arbitrary/ObjectArbitrary.js
+source-contains-prebuilt-javascript-object debian/tests/test_modules/fast-check/lib/check/arbitrary/TupleArbitrary.generated.js
+source-contains-prebuilt-javascript-object debian/tests/test_modules/fast-check/lib/check/property/AsyncProperty.generated.js
+source-contains-prebuilt-javascript-object debian/tests/test_modules/fast-check/lib/check/property/Property.generated.js
+source-contains-prebuilt-javascript-object test/samples-common/construct-binary.js
+very-long-line-length-in-source-file benchmark/samples/scalar_double_quoted_binary_01.yaml line 1 is 806 characters long (>512)
+very-long-line-length-in-source-file benchmark/samples/scalar_double_quoted_binary_02.yaml line 1 is 12006 characters long (>512)
+very-long-line-length-in-source-file benchmark/samples/scalar_double_quoted_escaped_02.yaml line 1 is 3443 characters long (>512)
+very-long-line-length-in-source-file benchmark/samples/scalar_double_quoted_simple_02.yaml line 1 is 3352 characters long (>512)
+very-long-line-length-in-source-file debian/tests/test_modules/fast-check/lib/bundle.js line 10939 is 7026 characters long (>512)
+very-long-line-length-in-source-file debian/tests/test_modules/fast-check/lib/check/arbitrary/ObjectArbitrary.js line 50 is 542 characters long (>512)
+very-long-line-length-in-source-file debian/tests/test_modules/fast-check/lib/check/arbitrary/TupleArbitrary.generated.js line 658 is 620 characters long (>512)
+very-long-line-length-in-source-file test/samples-common/construct-binary.js line 10 is 621 characters long (>512)
+very-long-line-length-in-source-file test/unported/spec-10-08.data line 4 is 2081 characters long (>512)

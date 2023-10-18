@@ -3,10 +3,10 @@
 
 var assert = require('assert');
 
-var isNegativeZero = require('../../lib/js-yaml/common').isNegativeZero;
+var isNegativeZero = require('../../lib/common').isNegativeZero;
 
 
-test('isNegativeZero', function () {
+it('isNegativeZero', function () {
   assert(!isNegativeZero(0));
   assert(!isNegativeZero(0.0));
   assert(isNegativeZero(-0));

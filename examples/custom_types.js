@@ -5,7 +5,7 @@
 var fs   = require('fs');
 var path = require('path');
 var util = require('util');
-var yaml = require('../lib/js-yaml');
+var yaml = require('../');
 
 
 // Let's define a couple of classes.
@@ -77,7 +77,7 @@ var SpaceYamlType = new yaml.Type('!space', {
 
 // After our types are defined, it's time to join them into a schema.
 
-var SPACE_SCHEMA = yaml.Schema.create([ SpaceYamlType, PointYamlType ]);
+var SPACE_SCHEMA = yaml.DEFAULT_SCHEMA.extend([ SpaceYamlType, PointYamlType ]);
 
 // do not execute the following if file is required (http://stackoverflow.com/a/6398335)
 if (require.main === module) {

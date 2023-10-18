@@ -1,2 +1,2 @@
-fix-for-argarse-2.diff
-update-test-for-mocha-8.patch
+fix-shebang.patch
+fix-for-rollup-3.patch
