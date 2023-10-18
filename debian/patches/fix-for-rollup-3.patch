@@ -1,0 +1,29 @@
+Description: fix for rollup 3
+Author: Yadd <yadd@debian.org>
+Bug-Debian: https://bugs.debian.org/1022633
+Forwarded: not-needed
+Last-Update: 2022-10-26
+
+--- a/support/rollup.config.js
++++ b/support/rollup.config.js
+@@ -1,7 +1,7 @@
+-import nodeResolve from '@rollup/plugin-node-resolve';
+-import commonjs from '@rollup/plugin-commonjs';
+-import pkg from '../package.json';
+-import { terser } from 'rollup-plugin-terser';
++const nodeResolve = require('@rollup/plugin-node-resolve').nodeResolve;
++const commonjs = require('@rollup/plugin-commonjs');
++const pkg = require('../package.json');
++const { terser } = require('rollup-plugin-terser');
+ 
+ const banner = {
+   banner() {
+@@ -13,7 +13,7 @@
+ 
+ const umd_out_base = { format: 'umd', name: 'jsyaml', exports: 'named' };
+ 
+-export default [
++module.exports = [
+   // es5
+   {
+     input: 'index.js',

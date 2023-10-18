@@ -1,0 +1,14 @@
+Description: fix shebang
+Author: Yadd <yadd@debian.org>
+Bug-Debian: https://bugs.debian.org/898857
+Forwarded: not-needed
+Last-Update: 2021-11-24
+
+--- a/bin/js-yaml.js
++++ b/bin/js-yaml.js
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env node
++#!/usr/bin/node
+ 
+ 
+ 'use strict';

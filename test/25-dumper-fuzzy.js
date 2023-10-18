@@ -33,15 +33,15 @@ var dumpOptionsArbitrary = fc.record({
     return instance;
   });
 
-suite('Properties', function () {
-  test('Load from dumped should be the original object', function () {
+describe('Properties', function () {
+  it('Load from dumped should be the original object', function () {
     fc.assert(fc.property(
       yamlArbitrary,
       dumpOptionsArbitrary,
       function (obj, dumpOptions) {
-        var yamlContent = yaml.safeDump(obj, dumpOptions);
+        var yamlContent = yaml.dump(obj, dumpOptions);
         assert.ok(typeof yamlContent === 'string');
-        assert.deepStrictEqual(yaml.safeLoad(yamlContent), obj);
+        assert.deepStrictEqual(yaml.load(yamlContent), obj);
       }));
   });
 });

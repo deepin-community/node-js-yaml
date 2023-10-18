@@ -2,7 +2,7 @@
 
 /* eslint-env browser */
 
-var jsyaml     = require('../../');
+var jsyaml     = require('../../index.js');
 var codemirror = require('codemirror');
 var base64     = require('./base64');
 var inspect    = require('util').inspect;
@@ -21,7 +21,7 @@ var SexyYamlType = new jsyaml.Type('!sexy', {
   }
 });
 
-var SEXY_SCHEMA = jsyaml.Schema.create([ SexyYamlType ]);
+var SEXY_SCHEMA = jsyaml.DEFAULT_SCHEMA.extend([ SexyYamlType ]);
 
 function parse() {
   var str, obj;

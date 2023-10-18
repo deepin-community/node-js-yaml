@@ -1,3 +1,63 @@
+node-js-yaml (4.1.0+dfsg+~4.0.5-7) unstable; urgency=medium
+
+  * Team upload
+  * Update standards version to 4.6.1, no changes needed.
+  * Add fix for rollup 3 (Closes: #1022633)
+
+ -- Yadd <yadd@debian.org>  Wed, 26 Oct 2022 14:30:53 +0200
+
+node-js-yaml (4.1.0+dfsg+~4.0.5-6) unstable; urgency=medium
+
+  * Indicate that version 4 breaks yarnpkg < 1.22.10+~cs22.25.14-5~
+  * Build missing files (Closes: #1004479)
+
+ -- Yadd <yadd@debian.org>  Fri, 28 Jan 2022 14:38:39 +0100
+
+node-js-yaml (4.1.0+dfsg+~4.0.5-5) unstable; urgency=medium
+
+  * Indicate that node-js-yaml ≥ 4 breaks node-gulp-concat
+    < 2.6.1+~0.0.15+git20190329.179bb8c+~1.0.3-4~
+
+ -- Yadd <yadd@debian.org>  Fri, 10 Dec 2021 12:24:50 +0100
+
+node-js-yaml (4.1.0+dfsg+~4.0.5-4) unstable; urgency=medium
+
+  * Fix shebang (Closes: #898857)
+  * Indicate that js-yaml-4 breaks eslint < 5.16.0~dfsg+~4.16.8-8~
+
+ -- Yadd <yadd@debian.org>  Thu, 25 Nov 2021 13:54:57 +0100
+
+node-js-yaml (4.1.0+dfsg+~4.0.5-3) unstable; urgency=medium
+
+  * Indicate that js-yaml-4 breaks:
+    + grunt < 1.3.0-2~
+    + node-istanbul < 0.4.5+repack09+~cs74.23.58-2~
+    + node-tap < 12.0.1+ds-4~
+    + node-tap-parser < 7.0.0+ds1-6~
+
+ -- Yadd <yadd@debian.org>  Wed, 24 Nov 2021 15:53:57 +0100
+
+node-js-yaml (4.1.0+dfsg+~4.0.5-2) unstable; urgency=medium
+
+  * Re-upload to force rebuild
+
+ -- Yadd <yadd@debian.org>  Sun, 21 Nov 2021 08:17:14 +0100
+
+node-js-yaml (4.1.0+dfsg+~4.0.5-1) unstable; urgency=medium
+
+  [ Debian Janitor ]
+  * Remove constraints unnecessary since buster
+
+  [ Yadd ]
+  * Update standards version to 4.6.0, no changes needed.
+  * Fix debian/watch
+  * New upstream version 4.1.0+dfsg+~4.0.5
+  * Drop patches
+  * Update lintian overrides
+  * Update nodejs dependency to nodejs:any
+
+ -- Yadd <yadd@debian.org>  Sat, 20 Nov 2021 12:36:23 +0100
+
 node-js-yaml (3.14.1+dfsg+~3.12.6-2) unstable; urgency=medium
 
   * Increase test timeout (Closes: #980009)
