@@ -1,2 +1,3 @@
 fix-shebang.patch
 fix-for-rollup-3.patch
+cve_2025_64718.patch

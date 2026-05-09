@@ -1,0 +1,114 @@
+From 383665ff4248ec2192d1274e934462bb30426879 Mon Sep 17 00:00:00 2001
+From: Alex Kocharin <alex@kocharin.ru>
+Date: Tue, 11 Nov 2025 04:07:26 +0400
+Subject: [PATCH] fix prototype pollution in merge (<<)
+
+---
+ CHANGELOG.md        |  5 +++++
+ lib/loader.js       | 30 ++++++++++++++++++------------
+ test/issues/0164.js | 20 ++++++++++++++++++--
+ 3 files changed, 41 insertions(+), 14 deletions(-)
+
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index ff2375e0..34a7b5b7 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+ 
+ 
++## [4.1.1] - 2025-11-12
++### Security
++- Fix prototype pollution issue in yaml merge (<<) operator.
++
++
+ ## [4.1.0] - 2021-04-15
+ ### Added
+ - Types are now exported as `yaml.types.XXX`.
+diff --git a/lib/loader.js b/lib/loader.js
+index 39f13f56..0e0ba09c 100644
+--- a/lib/loader.js
++++ b/lib/loader.js
+@@ -120,6 +120,22 @@ function charFromCodepoint(c) {
+   );
+ }
+ 
++// set a property of a literal object, while protecting against prototype pollution,
++// see https://github.com/nodeca/js-yaml/issues/164 for more details
++function setProperty(object, key, value) {
++  // used for this specific key only because Object.defineProperty is slow
++  if (key === '__proto__') {
++    Object.defineProperty(object, key, {
++      configurable: true,
++      enumerable: true,
++      writable: true,
++      value,
++    });
++  } else {
++    object[key] = value;
++  }
++}
++
+ var simpleEscapeCheck = new Array(256); // integer, for fast access
+ var simpleEscapeMap = new Array(256);
+ for (var i = 0; i < 256; i++) {
+@@ -298,7 +314,7 @@ function mergeMappings(state, destination, source, overridableKeys) {
+     key = sourceKeys[index];
+ 
+     if (!_hasOwnProperty.call(destination, key)) {
+-      destination[key] = source[key];
++      setProperty(destination, key, source[key]);
+       overridableKeys[key] = true;
+     }
+   }
+@@ -358,17 +374,7 @@ function storeMappingPair(state, _result, overridableKeys, keyTag, keyNode, valu
+       throwError(state, 'duplicated mapping key');
+     }
+ 
+-    // used for this specific key only because Object.defineProperty is slow
+-    if (keyNode === '__proto__') {
+-      Object.defineProperty(_result, keyNode, {
+-        configurable: true,
+-        enumerable: true,
+-        writable: true,
+-        value: valueNode
+-      });
+-    } else {
+-      _result[keyNode] = valueNode;
+-    }
++    setProperty(_result, keyNode, valueNode);
+     delete overridableKeys[keyNode];
+   }
+ 
+diff --git a/test/issues/0164.js b/test/issues/0164.js
+index 963087f1..8240318d 100644
+--- a/test/issues/0164.js
++++ b/test/issues/0164.js
+@@ -6,9 +6,25 @@ const yaml = require('../../');
+ 
+ 
+ it('should define __proto__ as a value (not invoke setter)', function () {
+-  let object = yaml.load('{ __proto__: {foo: bar} }');
++  let object = yaml.load('{ __proto__: {polluted: bar} }');
+ 
+   assert.strictEqual(({}).hasOwnProperty.call(yaml.load('{}'), '__proto__'), false);
+   assert.strictEqual(({}).hasOwnProperty.call(object, '__proto__'), true);
+-  assert(!object.foo);
++  assert(!object.polluted);
++});
++
++
++it('should merge __proto__ as a value with << operator', function () {
++  let object = yaml.load(`
++payload: &ref
++  polluted: bar
++
++foo:
++  <<:
++    __proto__: *ref
++  `);
++
++  assert.strictEqual(({}).hasOwnProperty.call(yaml.load('{}'), '__proto__'), false);
++  assert.strictEqual(({}).hasOwnProperty.call(object.foo, '__proto__'), true);
++  assert(!object.foo.polluted);
+ });
