@@ -80,7 +80,10 @@ index 39f13f56..0e0ba09c 100644
      delete overridableKeys[keyNode];
    }
  
+diff --git a/test/issues/0164.js b/test/issues/0164.js
 index 963087f1..8240318d 100644
+--- a/test/issues/0164.js
++++ b/test/issues/0164.js
 @@ -6,9 +6,25 @@ const yaml = require('../../');
  
  
